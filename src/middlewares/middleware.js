@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const postModel = require("../models/postModel")
 const mongoose = require("mongoose")
 
-// const redis_client = require("../redis_connect.js")
+const redis_client = require("../redis_connect.js")
 
 const { getAccessToken } = require("../controllers/userController")
 
@@ -32,13 +32,13 @@ const authentication = async (req, res, next) => {
                 return res.status(401).send({ status: false, data: "unauthenticated refresh Token " })
 
 
-            // console.log("userId", decodeRefreshToken.userId);
+            console.log("userId", decodeRefreshToken.userId);
 
-            // let getRefTokenInRedis = await redis_client.get(decodeRefreshToken.userId)
-            // if (getRefTokenInRedis == null)
-            //     return res.status(401).send({ status: false, data: "userId doesn't exist with this refresh toke" })
+            let getRefTokenInRedis = await redis_client.get(decodeRefreshToken.userId)
+            if (getRefTokenInRedis == null)
+                return res.status(401).send({ status: false, data: "userId doesn't exist with this refresh toke" })
 
-            // console.log("getRefTokenInRedis", getRefTokenInRedis);
+            console.log("getRefTokenInRedis", getRefTokenInRedis);
 
             let upadteToken = await getAccessToken(decodeRefreshToken.userId)
 

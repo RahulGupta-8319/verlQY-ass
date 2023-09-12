@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const userModel = require('../models/userModel')
 
-// const redis_client = require("../redis_connect.js")
+const redis_client = require("../redis_connect.js")
 
 
 const nameRegex = /^[a-z A-Z]+$/
@@ -31,7 +31,7 @@ const generateRefreshToken = async (user_id) => {
 
     const refresh_token = jwt.sign(payload, "refreshToken")
 
-    // let setRefreshToekn = await redis_client.set(user_id.toString(), JSON.stringify(refresh_token))
+    let setRefreshToekn = await redis_client.set(user_id.toString(), JSON.stringify(refresh_token))
 
     return refresh_token;
 }
